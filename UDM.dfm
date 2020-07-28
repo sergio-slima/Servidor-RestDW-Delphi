@@ -13,7 +13,7 @@ object DM: TDM
       'DriverID=FB')
     LoginPrompt = False
     Left = 40
-    Top = 24
+    Top = 32
   end
   object RESTDWPoolerDB: TRESTDWPoolerDB
     RESTDriver = RESTDWDriverFD
@@ -25,14 +25,14 @@ object DM: TDM
     Active = True
     PoolerOffMessage = 'RESTPooler not active.'
     ParamCreate = True
-    Left = 128
-    Top = 24
+    Left = 40
+    Top = 160
   end
   object RESTDWDriverFD: TRESTDWDriverFD
     CommitRecords = 100
     Connection = Conn
-    Left = 128
-    Top = 88
+    Left = 40
+    Top = 224
   end
   object dwEvents: TDWServerEvents
     IgnoreInvalidParams = False
@@ -106,8 +106,99 @@ object DM: TDM
         JsonMode = jmPureJSON
         Name = 'ItemFoto'
         OnReplyEvent = dwEventsEventsItemFotoReplyEvent
+      end
+      item
+        Routes = [crAll]
+        DWParams = <
+          item
+            TypeObject = toParam
+            ObjectDirection = odIN
+            ObjectValue = ovString
+            ParamName = 'lote'
+            Encoded = False
+          end
+          item
+            TypeObject = toParam
+            ObjectDirection = odIN
+            ObjectValue = ovString
+            ParamName = 'loja'
+            Encoded = False
+          end
+          item
+            TypeObject = toParam
+            ObjectDirection = odIN
+            ObjectValue = ovString
+            ParamName = 'usuario'
+            Encoded = False
+          end
+          item
+            TypeObject = toParam
+            ObjectDirection = odIN
+            ObjectValue = ovString
+            ParamName = 'tipo'
+            Encoded = False
+          end
+          item
+            TypeObject = toParam
+            ObjectDirection = odIN
+            ObjectValue = ovString
+            ParamName = 'token'
+            Encoded = False
+          end>
+        JsonMode = jmPureJSON
+        Name = 'Lotes'
+        OnReplyEvent = dwEventsEventsLotesReplyEvent
+      end
+      item
+        Routes = [crAll]
+        DWParams = <
+          item
+            TypeObject = toParam
+            ObjectDirection = odIN
+            ObjectValue = ovString
+            ParamName = 'lote'
+            Encoded = False
+          end
+          item
+            TypeObject = toParam
+            ObjectDirection = odIN
+            ObjectValue = ovString
+            ParamName = 'loja'
+            Encoded = False
+          end
+          item
+            TypeObject = toParam
+            ObjectDirection = odIN
+            ObjectValue = ovString
+            ParamName = 'cod_barra'
+            Encoded = False
+          end
+          item
+            TypeObject = toParam
+            ObjectDirection = odIN
+            ObjectValue = ovString
+            ParamName = 'qtd'
+            Encoded = False
+          end
+          item
+            TypeObject = toParam
+            ObjectDirection = odIN
+            ObjectValue = ovString
+            ParamName = 'tipo'
+            Encoded = False
+          end
+          item
+            TypeObject = toParam
+            ObjectDirection = odIN
+            ObjectValue = ovString
+            ParamName = 'token'
+            Encoded = False
+          end>
+        JsonMode = jmPureJSON
+        Name = 'ItensLotes'
+        OnReplyEvent = dwEventsEventsItensLotesReplyEvent
       end>
-    Left = 128
-    Top = 160
+    Left = 120
+    Top = 32
   end
 end

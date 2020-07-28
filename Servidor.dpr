@@ -7,7 +7,8 @@ uses
   UDM in 'UDM.pas' {DM: TDataModule},
   UUsuario in 'UUsuario.pas',
   UItem in 'UItem.pas',
-  uMD5 in 'uMD5.pas';
+  uMD5 in 'uMD5.pas',
+  UColeta in 'UColeta.pas';
 
 {$R *.res}
 
