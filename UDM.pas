@@ -9,7 +9,9 @@ uses
   FireDAC.FMXUI.Wait, Data.DB, FireDAC.Comp.Client, FireDAC.Phys.FB,
   FireDAC.Phys.FBDef, uRESTDWPoolerDB, uRestDWDriverFD, uDWAbout,
   uRESTDWServerEvents, uDWJSONObject, UUsuario, System.JSON, FMX.Graphics,
-  Soap.EncdDecd, UItem;
+  Soap.EncdDecd, UItem, FireDAC.Comp.UI, FireDAC.Phys.IBBase,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
+  FireDAC.Comp.DataSet;
 
 type
   TDM = class(TServerMethodDataModule)
@@ -17,6 +19,9 @@ type
     RESTDWPoolerDB: TRESTDWPoolerDB;
     RESTDWDriverFD: TRESTDWDriverFD;
     dwEvents: TDWServerEvents;
+    FDGUIxWaitCursor1: TFDGUIxWaitCursor;
+    FDPhysFBDriverLink1: TFDPhysFBDriverLink;
+    FDQuery: TFDQuery;
     procedure dwEventsEventshoraReplyEvent(var Params: TDWParams;
       var Result: string);
     procedure dwEventsEventsValidaLoginReplyEvent(var Params: TDWParams;
@@ -28,10 +33,13 @@ type
       var Result: string);
     procedure dwEventsEventsLotesReplyEvent(var Params: TDWParams;
       var Result: string);
+    procedure dwEventsEventsUltimoCodigoReplyEvent(var Params: TDWParams;
+      var Result: string);
   private
     { Private declarations }
   public
     { Public declarations }
+    Ultimo_Codigo : Integer;
   end;
 
 var
@@ -43,7 +51,7 @@ implementation
 
 {$R *.dfm}
 
-uses System.IniFiles, FMX.Dialogs, uMD5, UColeta;
+uses System.IniFiles, FMX.Dialogs, uMD5, UColeta, UUltimoCodigo, uDWConsts;
 
 function LoadConfig(): string;      //Configuracao INI
 var
@@ -318,6 +326,58 @@ begin
     Result := json.ToString;
   finally
     json.DisposeOf;
+  end;
+end;
+
+procedure TDM.dwEventsEventsUltimoCodigoReplyEvent(var Params: TDWParams;
+  var Result: string);
+var
+  jsondw : uDWJSONObject.TJSONValue;
+  json : TJSONObject;
+  erro, loja : String;
+  ultimo : TUltimoCodigo;
+begin
+  try
+    loja := Params.ItemsString['loja'].AsString;
+
+    json := TJsonObject.Create;
+
+    ultimo := TUltimoCodigo.Create(DM.Conn);
+    ultimo.Loja := loja;
+
+    if not ultimo.UltimoCodigo(erro) then
+    begin
+      json.AddPair('sucesso', 'N');
+      json.AddPair('erro', erro);
+      json.AddPair('ultimo', '0');
+    end else
+    begin
+      json.AddPair('sucesso', 'S');
+      json.AddPair('erro', '');
+      json.AddPair('ultimo', ultimo.Ultimo_Codigo.ToString);
+
+      with DM.FDQuery do
+      begin
+        Active := False;
+        Sql.Clear;
+        Sql.Add('SELECT CODIGO FROM CODIGOS');
+        Sql.Add('Where LOJA = :LOJA AND TABELA = :TABELA');
+        ParamByName('LOJA').Value := loja;
+        ParamByName('TABELA').Value := 'APP_COLETAS';
+        Active := True;
+      end;
+
+      try
+        jsondw := uDWJSONObject.TJSONValue.Create;
+        jsondw.LoadFromDataset('',DM.FDQuery, false, jmPureJSON);
+
+        Result := jsondw.ToJSON;
+      finally
+        jsondw.DisposeOf;
+      end;
+    end;
+  finally
+    ultimo.DisposeOf;
   end;
 end;
 

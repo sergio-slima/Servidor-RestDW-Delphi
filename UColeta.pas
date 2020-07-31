@@ -97,33 +97,33 @@ begin
         Cod_Coleta := FieldByName('CODIGO').AsInteger + 1;
 
       //Inserindo registro de transferencia
-      Active := False;
-      Sql.Clear;
-      Sql.Add('INSERT INTO APP_COLETAS (CODIGO,LOJA,LOTE,USUARIO,DATA,STATUS,TIPO,TOKEN)');
-      Sql.Add('VALUES (:CODIGO,:LOJA,:LOTE,:USUARIO,:DATA,:STATUS,:TIPO,:TOKEN)');
-      ParamByName('CODIGO').Value := Zeros(IntToStr(Cod_Coleta),6);
-      ParamByName('LOJA').Value := Loja;
-      ParamByName('LOTE').Value := Lote;
-      ParamByName('USUARIO').Value := Usuario;
-      ParamByName('DATA').Value := Date;
-      ParamByName('STATUS').Value := 'N';
-      ParamByName('TIPO').Value := Tipo;
-      ParamByName('TOKEN').Value := Token;
-      ExecSQL;
-
-      // Inserindo Itens da Transferencia
-      Active := False;
-      for i := low(FItens) to high(fItens) do
-      begin
-        Sql.Clear;
-        Sql.Add('INSERT INTO APP_ITENS_COLETAS (COLETA,LOJA,COD_BARRA,QTD_SAIDA)');
-        Sql.Add('VALUES (:COLETA,:LOJA,:COD_BARRA,:QTD_SAIDA)');
-        ParamByName('COLETA').Value := Zeros(IntToStr(Cod_Coleta),6);
-        ParamByName('LOJA').Value := Loja;
-        ParamByName('COD_BARRA').Value := FItens[i].CodBarra;
-        ParamByName('QTD_SAIDA').Value := FItens[i].Qtd;
-        ExecSQL;
-      end;
+//      Active := False;
+//      Sql.Clear;
+//      Sql.Add('INSERT INTO APP_COLETAS (CODIGO,LOJA,LOTE,USUARIO,DATA,STATUS,TIPO,TOKEN)');
+//      Sql.Add('VALUES (:CODIGO,:LOJA,:LOTE,:USUARIO,:DATA,:STATUS,:TIPO,:TOKEN)');
+//      ParamByName('CODIGO').Value := Zeros(IntToStr(Cod_Coleta),6);
+//      ParamByName('LOJA').Value := Loja;
+//      ParamByName('LOTE').Value := Lote;
+//      ParamByName('USUARIO').Value := Usuario;
+//      ParamByName('DATA').Value := Date;
+//      ParamByName('STATUS').Value := 'N';
+//      ParamByName('TIPO').Value := Tipo;
+//      ParamByName('TOKEN').Value := Token;
+//      ExecSQL;
+//
+//      // Inserindo Itens da Transferencia
+//      Active := False;
+//      for i := low(FItens) to high(fItens) do
+//      begin
+//        Sql.Clear;
+//        Sql.Add('INSERT INTO APP_ITENS_COLETAS (COLETA,LOJA,COD_BARRA,QTD_SAIDA)');
+//        Sql.Add('VALUES (:COLETA,:LOJA,:COD_BARRA,:QTD_SAIDA)');
+//        ParamByName('COLETA').Value := Zeros(IntToStr(Cod_Coleta),6);
+//        ParamByName('LOJA').Value := Loja;
+//        ParamByName('COD_BARRA').Value := FItens[i].CodBarra;
+//        ParamByName('QTD_SAIDA').Value := FItens[i].Qtd;
+//        ExecSQL;
+//      end;
 
       erro := '';
       Result := True;

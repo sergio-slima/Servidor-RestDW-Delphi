@@ -8,6 +8,7 @@ uses
   UUsuario in 'UUsuario.pas',
   UItem in 'UItem.pas',
   uMD5 in 'uMD5.pas',
+  UUltimoCodigo in 'UUltimoCodigo.pas',
   UColeta in 'UColeta.pas';
 
 {$R *.res}

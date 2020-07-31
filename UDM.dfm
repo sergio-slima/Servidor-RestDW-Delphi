@@ -3,7 +3,7 @@ object DM: TDM
   OnCreate = ServerMethodDataModuleCreate
   Encoding = esASCII
   Height = 368
-  Width = 336
+  Width = 354
   object Conn: TFDConnection
     Params.Strings = (
       'Database=D:\Infosys\BD.FDB'
@@ -13,7 +13,7 @@ object DM: TDM
       'DriverID=FB')
     LoginPrompt = False
     Left = 40
-    Top = 32
+    Top = 8
   end
   object RESTDWPoolerDB: TRESTDWPoolerDB
     RESTDriver = RESTDWDriverFD
@@ -26,13 +26,13 @@ object DM: TDM
     PoolerOffMessage = 'RESTPooler not active.'
     ParamCreate = True
     Left = 40
-    Top = 160
+    Top = 64
   end
   object RESTDWDriverFD: TRESTDWDriverFD
     CommitRecords = 100
     Connection = Conn
     Left = 40
-    Top = 224
+    Top = 128
   end
   object dwEvents: TDWServerEvents
     IgnoreInvalidParams = False
@@ -197,8 +197,36 @@ object DM: TDM
         JsonMode = jmPureJSON
         Name = 'ItensLotes'
         OnReplyEvent = dwEventsEventsItensLotesReplyEvent
+      end
+      item
+        Routes = [crAll]
+        DWParams = <
+          item
+            TypeObject = toParam
+            ObjectDirection = odIN
+            ObjectValue = ovString
+            ParamName = 'loja'
+            Encoded = False
+          end>
+        JsonMode = jmPureJSON
+        Name = 'UltimoCodigo'
+        OnReplyEvent = dwEventsEventsUltimoCodigoReplyEvent
       end>
     Left = 120
+    Top = 32
+  end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'FMX'
+    Left = 136
+    Top = 304
+  end
+  object FDPhysFBDriverLink1: TFDPhysFBDriverLink
+    Left = 264
+    Top = 304
+  end
+  object FDQuery: TFDQuery
+    Connection = Conn
+    Left = 296
     Top = 32
   end
 end

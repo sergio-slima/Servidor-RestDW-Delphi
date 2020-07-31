@@ -353,6 +353,7 @@
         <DCCReference Include="UUsuario.pas"/>
         <DCCReference Include="UItem.pas"/>
         <DCCReference Include="uMD5.pas"/>
+        <DCCReference Include="UUltimoCodigo.pas"/>
         <DCCReference Include="UColeta.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
